@@ -3,6 +3,7 @@ package com.kabouzeid.gramophone.util;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
@@ -127,8 +128,8 @@ public final class PreferenceUtil {
     }
 
     @StyleRes
-    public int getGeneralTheme() {
-        return getThemeResFromPrefValue(mPreferences.getString(GENERAL_THEME, "light"));
+    public int getGeneralTheme(Context context) {
+        return getThemeResFromPrefValue(mPreferences.getString(GENERAL_THEME, "light"), context);
     }
 
     public void setGeneralTheme(String theme) {
@@ -138,7 +139,7 @@ public final class PreferenceUtil {
     }
 
     @StyleRes
-    public static int getThemeResFromPrefValue(String themePrefValue) {
+    public static int getThemeResFromPrefValue(String themePrefValue, Context context) {
         switch (themePrefValue) {
             case "dark":
                 return R.style.Theme_Phonograph;
@@ -147,6 +148,16 @@ public final class PreferenceUtil {
             case "light":
             default:
                 return R.style.Theme_Phonograph_Light;
+            case "auto":
+                int nightModeFlags = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                switch (nightModeFlags) {
+                    case Configuration.UI_MODE_NIGHT_YES:
+                        return R.style.Theme_Phonograph_Black;
+                    case Configuration.UI_MODE_NIGHT_NO:
+                        return R.style.Theme_Phonograph_Light;
+                    default:
+                        return R.style.Theme_Phonograph;
+                }
         }
     }
 
