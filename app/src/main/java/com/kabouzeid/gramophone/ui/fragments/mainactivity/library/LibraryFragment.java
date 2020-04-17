@@ -201,11 +201,14 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
             menu.findItem(R.id.action_colored_footers).setChecked(absLibraryRecyclerViewCustomGridSizeFragment.usePalette());
             menu.findItem(R.id.action_colored_footers).setEnabled(absLibraryRecyclerViewCustomGridSizeFragment.canUsePalette());
 
+            menu.findItem(R.id.action_filter_single).setChecked(absLibraryRecyclerViewCustomGridSizeFragment.getFilterSingles());
+
             setUpSortOrderMenu(absLibraryRecyclerViewCustomGridSizeFragment, menu.findItem(R.id.action_sort_order).getSubMenu());
         } else {
             menu.removeItem(R.id.action_grid_size);
             menu.removeItem(R.id.action_colored_footers);
             menu.removeItem(R.id.action_sort_order);
+            menu.removeItem(R.id.action_filter_single);
         }
         Activity activity = getActivity();
         if (activity == null) return;
@@ -229,6 +232,11 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
             if (item.getItemId() == R.id.action_colored_footers) {
                 item.setChecked(!item.isChecked());
                 absLibraryRecyclerViewCustomGridSizeFragment.setAndSaveUsePalette(item.isChecked());
+                return true;
+            }
+            if (item.getItemId() == R.id.action_filter_single) {
+                item.setChecked(!item.isChecked());
+                absLibraryRecyclerViewCustomGridSizeFragment.setAndSaveFilterSingles(item.isChecked());
                 return true;
             }
             if (handleGridSizeMenuItem(absLibraryRecyclerViewCustomGridSizeFragment, item)) {

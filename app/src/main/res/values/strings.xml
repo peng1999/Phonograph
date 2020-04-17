@@ -311,4 +311,5 @@
     <string name="dialog_ringtone_title">Set ringtone</string>
     <string name="dialog_ringtone_message">Allow phonograph to modify audio settings</string>
     <string name="auto_theme_name">Follow System (Light + Black)</string>
+    <string name="filter_single">Filter single</string>
 </resources>

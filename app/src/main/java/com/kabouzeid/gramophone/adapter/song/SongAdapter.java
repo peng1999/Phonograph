@@ -32,7 +32,9 @@ import com.kabouzeid.gramophone.util.PreferenceUtil;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
@@ -40,12 +42,14 @@ import java.util.List;
 public class SongAdapter extends AbsMultiSelectAdapter<SongAdapter.ViewHolder, Song> implements MaterialCab.Callback, FastScrollRecyclerView.SectionedAdapter {
 
     protected final AppCompatActivity activity;
+    protected List<Song> originDataSet;
     protected List<Song> dataSet;
 
     protected int itemLayoutRes;
 
     protected boolean usePalette = false;
     protected boolean showSectionName = true;
+    protected boolean filterSingles = false;
 
     public SongAdapter(AppCompatActivity activity, List<Song> dataSet, @LayoutRes int itemLayoutRes, boolean usePalette, @Nullable CabHolder cabHolder) {
         this(activity, dataSet, itemLayoutRes, usePalette, cabHolder, true);
@@ -54,6 +58,7 @@ public class SongAdapter extends AbsMultiSelectAdapter<SongAdapter.ViewHolder, S
     public SongAdapter(AppCompatActivity activity, List<Song> dataSet, @LayoutRes int itemLayoutRes, boolean usePalette, @Nullable CabHolder cabHolder, boolean showSectionName) {
         super(activity, cabHolder, R.menu.menu_media_selection);
         this.activity = activity;
+        this.originDataSet = dataSet;
         this.dataSet = dataSet;
         this.itemLayoutRes = itemLayoutRes;
         this.usePalette = usePalette;
@@ -62,12 +67,41 @@ public class SongAdapter extends AbsMultiSelectAdapter<SongAdapter.ViewHolder, S
     }
 
     public void swapDataSet(List<Song> dataSet) {
-        this.dataSet = dataSet;
+        this.originDataSet = dataSet;
+        reFilter();
         notifyDataSetChanged();
     }
 
     public void usePalette(boolean usePalette) {
         this.usePalette = usePalette;
+        notifyDataSetChanged();
+    }
+
+    private void reFilter() {
+        if (filterSingles) {
+            dataSet = new ArrayList<>();
+            Map<Integer, Integer> albumCount = new HashMap<>();
+            for (Song song : originDataSet) {
+                Integer count = albumCount.get(song.albumId);
+                if (count == null) {
+                    albumCount.put(song.albumId, 1);
+                } else {
+                    albumCount.put(song.albumId, count + 1);
+                }
+            }
+            for (Song song : originDataSet) {
+                if (albumCount.get(song.albumId) == 1) {
+                    dataSet.add(song);
+                }
+            }
+        } else {
+            dataSet = originDataSet;
+        }
+    }
+
+    public void setFilterSingles(boolean filterSingles) {
+        this.filterSingles = filterSingles;
+        reFilter();
         notifyDataSetChanged();
     }
 

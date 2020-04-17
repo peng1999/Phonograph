@@ -42,12 +42,14 @@ public class AlbumsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFra
         int itemLayoutRes = getItemLayoutRes();
         notifyLayoutResChanged(itemLayoutRes);
         List<Album> dataSet = getAdapter() == null ? new ArrayList<>() : getAdapter().getDataSet();
-        return new AlbumAdapter(
+        AlbumAdapter adapter = new AlbumAdapter(
                 getLibraryFragment().getMainActivity(),
                 dataSet,
                 itemLayoutRes,
                 loadUsePalette(),
                 getLibraryFragment());
+        adapter.setFilterSingles(loadFilterSingles());
+        return adapter;
     }
 
     @Override
@@ -78,6 +80,21 @@ public class AlbumsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFra
     @Override
     protected void setUsePalette(boolean usePalette) {
         getAdapter().usePalette(usePalette);
+    }
+
+    @Override
+    protected void saveFilterSingles(boolean filterSingles) {
+        PreferenceUtil.getInstance(getActivity()).setAlbumFilterSingles(filterSingles);
+    }
+
+    @Override
+    protected boolean loadFilterSingles() {
+        return PreferenceUtil.getInstance(getActivity()).albumFilterSingles();
+    }
+
+    @Override
+    protected void setFilterSingles(boolean filterSingles) {
+        getAdapter().setFilterSingles(filterSingles);
     }
 
     @Override

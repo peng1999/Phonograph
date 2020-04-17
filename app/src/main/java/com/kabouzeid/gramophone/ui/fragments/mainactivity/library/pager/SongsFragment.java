@@ -44,22 +44,28 @@ public class SongsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFrag
         int itemLayoutRes = getItemLayoutRes();
         notifyLayoutResChanged(itemLayoutRes);
         boolean usePalette = loadUsePalette();
+        boolean filterSingles = loadFilterSingles();
         List<Song> dataSet = getAdapter() == null ? new ArrayList<>() : getAdapter().getDataSet();
 
+        SongAdapter adapter;
+
         if (getGridSize() <= getMaxGridSizeForList()) {
-            return new ShuffleButtonSongAdapter(
+            adapter = new ShuffleButtonSongAdapter(
                     getLibraryFragment().getMainActivity(),
                     dataSet,
                     itemLayoutRes,
                     usePalette,
                     getLibraryFragment());
         }
-        return new SongAdapter(
+        adapter = new SongAdapter(
                 getLibraryFragment().getMainActivity(),
                 dataSet,
                 itemLayoutRes,
                 usePalette,
                 getLibraryFragment());
+
+        adapter.setFilterSingles(filterSingles);
+        return adapter;
     }
 
     @Override
@@ -120,6 +126,21 @@ public class SongsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFrag
     @Override
     public void setUsePalette(boolean usePalette) {
         getAdapter().usePalette(usePalette);
+    }
+
+    @Override
+    protected void saveFilterSingles(boolean filterSingles) {
+        PreferenceUtil.getInstance(getActivity()).setSongFilterSingles(filterSingles);
+    }
+
+    @Override
+    protected boolean loadFilterSingles() {
+        return PreferenceUtil.getInstance(getActivity()).songFilterSingles();
+    }
+
+    @Override
+    protected void setFilterSingles(boolean filterSingles) {
+        getAdapter().setFilterSingles(filterSingles);
     }
 
     @Override

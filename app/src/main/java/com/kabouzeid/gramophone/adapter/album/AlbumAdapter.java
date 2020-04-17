@@ -39,15 +39,19 @@ import java.util.List;
 public class AlbumAdapter extends AbsMultiSelectAdapter<AlbumAdapter.ViewHolder, Album> implements FastScrollRecyclerView.SectionedAdapter {
 
     protected final AppCompatActivity activity;
+    protected List<Album> originDataSet;
     protected List<Album> dataSet;
 
     protected int itemLayoutRes;
 
     protected boolean usePalette = false;
 
+    protected boolean filterSingles = false;
+
     public AlbumAdapter(@NonNull AppCompatActivity activity, List<Album> dataSet, @LayoutRes int itemLayoutRes, boolean usePalette, @Nullable CabHolder cabHolder) {
         super(activity, cabHolder, R.menu.menu_media_selection);
         this.activity = activity;
+        this.originDataSet = dataSet;
         this.dataSet = dataSet;
         this.itemLayoutRes = itemLayoutRes;
         this.usePalette = usePalette;
@@ -60,8 +64,28 @@ public class AlbumAdapter extends AbsMultiSelectAdapter<AlbumAdapter.ViewHolder,
         notifyDataSetChanged();
     }
 
+    private void reFilter() {
+        if (filterSingles) {
+            dataSet = new ArrayList<>();
+            for (Album album : originDataSet) {
+                if (album.songs.size() > 1) {
+                    dataSet.add(album);
+                }
+            }
+        } else {
+            dataSet = originDataSet;
+        }
+    }
+
+    public void setFilterSingles(boolean filterSingles) {
+        this.filterSingles = filterSingles;
+        reFilter();
+        notifyDataSetChanged();
+    }
+
     public void swapDataSet(List<Album> dataSet) {
-        this.dataSet = dataSet;
+        this.originDataSet = dataSet;
+        reFilter();
         notifyDataSetChanged();
     }
 

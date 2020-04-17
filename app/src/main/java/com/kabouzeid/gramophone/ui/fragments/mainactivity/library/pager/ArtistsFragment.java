@@ -112,6 +112,19 @@ public class ArtistsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFr
     }
 
     @Override
+    protected void saveFilterSingles(boolean filterSingles) {
+    }
+
+    @Override
+    protected boolean loadFilterSingles() {
+        return false;
+    }
+
+    @Override
+    protected void setFilterSingles(boolean filterSingles) {
+    }
+
+    @Override
     protected void setGridSize(int gridSize) {
         getLayoutManager().setSpanCount(gridSize);
         getAdapter().notifyDataSetChanged();

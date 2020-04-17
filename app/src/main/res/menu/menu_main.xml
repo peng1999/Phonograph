@@ -58,6 +58,11 @@
     </item>
 
     <item
+        android:id="@+id/action_filter_single"
+        android:checkable="true"
+        android:title="@string/filter_single" />
+
+    <item
         android:id="@+id/action_colored_footers"
         android:checkable="true"
         android:title="@string/colored_footers" />

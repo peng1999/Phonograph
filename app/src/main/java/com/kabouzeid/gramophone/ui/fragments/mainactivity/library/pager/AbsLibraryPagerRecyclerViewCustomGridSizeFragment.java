@@ -18,6 +18,8 @@ public abstract class AbsLibraryPagerRecyclerViewCustomGridSizeFragment<A extend
 
     private boolean usePaletteInitialized;
     private boolean usePalette;
+    private boolean filterSinglesInitialized;
+    private boolean filterSingles;
     private int currentLayoutRes;
 
     public final int getGridSize() {
@@ -50,6 +52,14 @@ public abstract class AbsLibraryPagerRecyclerViewCustomGridSizeFragment<A extend
         return usePalette;
     }
 
+    public final boolean getFilterSingles() {
+        if (!filterSinglesInitialized) {
+            filterSingles = loadFilterSingles();
+            filterSinglesInitialized = true;
+        }
+        return filterSingles;
+    }
+
     public final String getSortOrder() {
         if (sortOrder == null) {
             sortOrder = loadSortOrder();
@@ -78,6 +88,11 @@ public abstract class AbsLibraryPagerRecyclerViewCustomGridSizeFragment<A extend
         this.usePalette = usePalette;
         saveUsePalette(usePalette);
         setUsePalette(usePalette);
+    }
+
+    public void setAndSaveFilterSingles(final boolean filterSingles) {
+        saveFilterSingles(filterSingles);
+        setFilterSingles(filterSingles);
     }
 
     public void setAndSaveSortOrder(final String sortOrder) {
@@ -143,6 +158,12 @@ public abstract class AbsLibraryPagerRecyclerViewCustomGridSizeFragment<A extend
     protected abstract boolean loadUsePalette();
 
     protected abstract void setUsePalette(boolean usePalette);
+
+    protected abstract void saveFilterSingles(boolean filterSingles);
+
+    protected abstract boolean loadFilterSingles();
+
+    protected abstract void setFilterSingles(boolean filterSingles);
 
     protected abstract void setGridSize(int gridSize);
 

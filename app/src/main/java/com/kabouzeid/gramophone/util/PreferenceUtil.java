@@ -54,6 +54,9 @@ public final class PreferenceUtil {
     public static final String ARTIST_COLORED_FOOTERS = "artist_colored_footers";
     public static final String ALBUM_ARTIST_COLORED_FOOTERS = "album_artist_colored_footers";
 
+    public static final String ALBUM_FILTER_SINGLES = "album_filter_singles";
+    public static final String SONG_FILTER_SINGLES = "song_filter_singles";
+
     public static final String FORCE_SQUARE_ALBUM_COVER = "force_square_album_art";
 
     public static final String COLORED_NOTIFICATION = "colored_notification";
@@ -458,6 +461,22 @@ public final class PreferenceUtil {
 
     public final boolean artistColoredFooters() {
         return mPreferences.getBoolean(ARTIST_COLORED_FOOTERS, true);
+    }
+
+    public void setAlbumFilterSingles(final boolean value) {
+        mPreferences.edit().putBoolean(ALBUM_FILTER_SINGLES, value).apply();
+    }
+
+    public final boolean albumFilterSingles() {
+        return mPreferences.getBoolean(ALBUM_FILTER_SINGLES, false);
+    }
+
+    public void setSongFilterSingles(final boolean value) {
+        mPreferences.edit().putBoolean(SONG_FILTER_SINGLES, value).apply();
+    }
+
+    public final boolean songFilterSingles() {
+        return mPreferences.getBoolean(SONG_FILTER_SINGLES, false);
     }
 
     public void setLastChangeLogVersion(int version) {
